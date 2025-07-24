@@ -98,11 +98,11 @@ export default function RouteAdvisor() {
     const normalized = condition.trim().toLowerCase();
 
     if (normalized === "excellent" || normalized === "good") {
-      return <div className="tag success">✅ Allowed to Proceed</div>;
+      return <div className="tag success">Allowed to Proceed</div>;
     } else if (normalized === "fair") {
-      return <div className="tag warning">⚠️ Proceed with Caution</div>;
+      return <div className="tag warning">Proceed with Caution</div>;
     } else if (normalized === "bad") {
-      return <div className="tag danger">❌ Not Allowed to Proceed</div>;
+      return <div className="tag danger">Not Allowed to Proceed</div>;
     } else if (normalized === "not a vehicle") {
       return <div className="tag info">🚫 Not a vehicle image detected</div>;
     }
@@ -166,9 +166,7 @@ export default function RouteAdvisor() {
                 alignItems: "center",
               }}
             >
-              <h2>
-                <b>Condition:</b>
-              </h2>
+              <h4 className="!text-[##333] font-bold">Condition:</h4>
 
               {condition ? (
                 <div
@@ -180,6 +178,27 @@ export default function RouteAdvisor() {
                 <p>No condition yet.</p>
               )}
             </div>
+            {condition?.trim().toLowerCase() == "bad" && (
+              <div className="flex items-start gap-2 mt-4 text-yellow-700 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-md">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mt-0.5 flex-shrink-0 text-yellow-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M8.257 3.099c.765-1.36 2.68-1.36 3.445 0l6.518 11.598c.75 1.336-.213 3.003-1.723 3.003H3.462c-1.51 0-2.473-1.667-1.723-3.003L8.257 3.1zM11 13a1 1 0 10-2 0 1 1 0 002 0zm-1-2a.75.75 0 01-.75-.75V8a.75.75 0 011.5 0v2.25A.75.75 0 0110 11z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="text-sm">
+                  This component appears to be significantly damaged and should
+                  be replaced promptly to ensure safety and performance.
+                </span>
+              </div>
+            )}
+
             <div>
               {(() => {
                 const normalized = condition.trim().toLowerCase();
@@ -208,7 +227,7 @@ export default function RouteAdvisor() {
                       }}
                     >
                       <FaEye style={{ fontSize: "16px" }} />
-                      View Routes
+                      Available Routes
                     </Link>
                   );
                 }

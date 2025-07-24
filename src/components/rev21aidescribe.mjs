@@ -48,7 +48,7 @@ app.post("/proxy-upload", upload.array("file"), async (req, res) => {
 
     // Guard clause: check if description mentions any vehicle-related keywords
     const isVehicle =
-      /\b(car|truck|vehicle|van|suv|jeep|automobile|bumper|door|mirror|fender|headlight|taillight|hood|windshield|tire|rim|grille|license plate|exhaust|wheel|chassis|trunk|bonnet|wiper|engine|radiator|brake pad|brake|caliper|suspension|shock absorber|spring|axle|fuel filter|oil filter|air filter|alternator|transmission|gearbox|fan belt|timing belt|turbo|intake manifold|exhaust manifold|piston|crankshaft|cylinder|camshaft|valve cover|battery|driveshaft|muffler|differential|injector|motor|ignition coil|spark plug)\b/i.test(
+      /\b(car|tire|truck|vehicle|van|suv|jeep|automobile|bumper|door|mirror|fender|headlight|taillight|hood|windshield|tire|rim|grille|license plate|exhaust|wheel|chassis|trunk|bonnet|wiper|engine|radiator|brake pad|brake|caliper|suspension|shock absorber|spring|axle|fuel filter|oil filter|air filter|alternator|transmission|gearbox|fan belt|timing belt|turbo|intake manifold|exhaust manifold|piston|crankshaft|cylinder|camshaft|valve cover|battery|driveshaft|muffler|differential|injector|motor|ignition coil|spark plug)\b/i.test(
         descriptionText
       );
 
