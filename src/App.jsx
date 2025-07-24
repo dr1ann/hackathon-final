@@ -1,17 +1,14 @@
-import { useState } from 'react';
-import './App.css';
-
-//import ChatComponent from './components/ChatComponent';
-import HomeScreen from './components/HomeScreen';
+// App.jsx
+import { Routes, Route } from "react-router-dom";
+import HomeScreen from "./components/HomeScreen";
+import MapPage from "./components/MapPage";
 
 function App() {
-  const [showChat, setShowChat] = useState(false); // initially hidden
-
   return (
-    <div>
-    
-      <HomeScreen />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomeScreen />} />
+      <Route path="/map" element={<MapPage />} />
+    </Routes>
   );
 }
 
