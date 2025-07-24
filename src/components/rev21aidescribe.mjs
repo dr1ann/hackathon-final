@@ -42,7 +42,7 @@ app.post("/proxy-upload", upload.single("file"), async (req, res) => {
     const prompt = `
 You are a professional vehicle inspection assistant. Based on the following description of a truck image:
 
-"\${visionText}"
+"${visionText}"
 
 Evaluate the *overall visible condition* of the truck. Consider these factors in your assessment:
 - Signs of wear, dents, scratches, rust, or visible damage
