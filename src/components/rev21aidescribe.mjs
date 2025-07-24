@@ -38,33 +38,44 @@ app.post("/proxy-upload", upload.single("file"), async (req, res) => {
     const visionText = await visionResponse.text();
     console.log("🖼️ Image description:", visionText);
 
-    // Step 3: Build chat prompt to rate condition
-    const prompt = `
-You are a professional vehicle inspection assistant. Based on the following description of a truck image:
+const prompt = `
+You are a professional vehicle inspection assistant. Based on the following description of a car or truck image:
 
 "${visionText}"
 
-Evaluate the overall visible condition of the truck. Consider these factors in your assessment:
-- Signs of wear, dents, scratches, rust, or visible damage
-- Missing or broken components
-- Paint condition, surface cleanliness, and maintenance cues
-- Mechanical parts: Are they dirty, oily, rusty, or clean and orderly?
-- Whether the environment (e.g., workshop, outdoors) suggests active maintenance or neglect
-- Presence of professional or industrial setup indicating care or neglect
-- Lack of any mention of damage, rust, or wear may indicate a well-maintained vehicle
+Evaluate the *overall visible condition* of the vehicle. Focus especially on identifying *serious damage* and unsafe conditions. Consider the following:
 
-Even if the description is vague, make a judgment by interpreting:
-- Cleanliness or neatness = likely Good or Excellent
-- Descriptions of clutter, dirt, or industrial wear = likely Fair or Bad
-- If only parts of the truck are visible (e.g., engine), assess the visible parts carefully and judge based on their apparent condition
+--- STRUCTURAL / BODY DAMAGE ---
+- Is any part of the vehicle crushed, twisted, or bent?
+- Are there missing or detached components (e.g., bumpers, doors, panels)?
+- Are wheels visibly damaged, bent, or detached?
+- Is the frame exposed or visibly compromised?
 
-Respond with only ONE of these ratings based on your assessment:
-- Excellent (like new, no visible issues, well-maintained)
-- Good (minor wear, no major visible damage)
-- Fair (visible scratches, dents, or signs of aging)
-- Bad (obvious damage, poor condition, or major issues)
+--- SAFETY DAMAGE ---
+- Has any airbag deployed? (This strongly indicates a serious crash)
+- Is there debris, a roadside crash scene, or signs of a recent accident?
+- Are windows shattered, cracked, or missing?
 
-Only respond with the rating word. No explanation or extra text.
+--- EXTERIOR CONDITION ---
+- Are there scratches, dents, rust, faded or chipped paint?
+- Is the surface clean or dirty? Are lights, mirrors, or tires damaged or missing?
+
+--- ENVIRONMENT ---
+- Is the vehicle parked on a road, junkyard, garage, or grassy roadside?
+- Does the environment suggest the vehicle is abandoned, crashed, or under repair?
+
+Interpret based on severity:
+- Any sign of *airbag deployment*, *crushed body*, *bent frame*, or *exposed internals* = *Bad*
+- Moderate dents or scratches = *Fair*
+- Clean and intact vehicle = *Good* or *Excellent*
+
+Respond with only ONE of the following ratings:
+- *Excellent* (like new, no visible issues, well-maintained)
+- *Good* (minor wear, no major visible damage)
+- *Fair* (visible scratches, dents, or signs of aging)
+- *Bad* (obvious damage, poor condition, serious issues like airbag deployment or crushed body)
+
+Only respond with the rating word. Do not include any explanation or extra text.
 `;
 
     const timestamp = new Date().toISOString();
