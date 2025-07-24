@@ -73,12 +73,6 @@ export default function MapPage() {
         zoom={13}
         mapContainerStyle={{ height: "100%", width: "100%" }}
       >
-        {/* Mock pickup point (A) */}
-        <Marker position={mockPickup} label="A" />
-
-        {/* Mock destination point (B) */}
-        <Marker position={mockDestination} label="B" />
-
         {/* Route */}
         {directions && <DirectionsRenderer directions={directions} />}
       </GoogleMap>
