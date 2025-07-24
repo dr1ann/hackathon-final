@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import { CoordinateModal } from "./CoordinateModal";
-import { HiPlus } from "react-icons/hi";
+import { FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function RouteAdvisor() {
   const fileInputRef = useRef(null);
   const [description, setDescription] = useState("");
@@ -11,6 +12,7 @@ export default function RouteAdvisor() {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+
   const handleCoordinateSubmit = (data) => {
     console.log(data);
     navigate("/map", { state: data });
@@ -164,8 +166,8 @@ export default function RouteAdvisor() {
             </div>
             <div>
               {condition && (
-                <button
-                  onClick={() => setModalVisible(true)}
+                <Link
+                  to="/map"
                   style={{
                     marginTop: "15px",
                     padding: "10px 18px",
@@ -178,12 +180,13 @@ export default function RouteAdvisor() {
                     fontWeight: "500",
                     display: "flex",
                     alignItems: "center",
+                    width: "fit-content",
                     gap: "8px", // spacing between icon and text
                   }}
                 >
-                  <HiPlus style={{ fontSize: "16px" }} />
-                  Enter Route Coordinates
-                </button>
+                  <FaEye style={{ fontSize: "16px" }} />
+                  View Routes
+                </Link>
               )}
             </div>
           </div>
