@@ -3,28 +3,30 @@ import {
   useLoadScript,
   DirectionsRenderer,
 } from "@react-google-maps/api";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Marker } from "@react-google-maps/api";
+
 const center = { lat: 11.1768892, lng: 125.003195 };
-const mockPickup = { lat: 11.1574, lng: 124.991 }; // Palo, Leyte
-const mockDestination = { lat: 11.0176, lng: 124.6075 }; // Ormoc City, Leyte
 
 export default function MapPage() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBYKY5CkAeXErPuGY0WvDI8tW5o3-mG9ZA",
   });
 
+  const location = useLocation();
+  const { pickup, destination } = location.state || {};
+
   const [directions, setDirections] = useState(null);
   const [eta, setEta] = useState(null);
 
   useEffect(() => {
-    if (!isLoaded || !mockPickup) return;
+    if (!isLoaded || !pickup || !destination) return;
 
     const service = new window.google.maps.DirectionsService();
     service.route(
       {
-        origin: mockPickup,
-        destination: mockDestination,
+        origin: pickup,
+        destination: destination,
         travelMode: window.google.maps.TravelMode.DRIVING,
       },
       (res, status) => {
@@ -39,7 +41,7 @@ export default function MapPage() {
         }
       }
     );
-  }, [isLoaded, mockPickup]);
+  }, [isLoaded, pickup, destination]);
 
   if (!isLoaded) return <div>Loading...</div>;
 

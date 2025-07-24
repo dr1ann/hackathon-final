@@ -1,11 +1,14 @@
 import React, { useRef, useState } from "react";
-
+import { CoordinateModal } from "./CoordinateModal";
+import { useNavigate } from "react-router-dom";
 export default function RouteAdvisor() {
   const fileInputRef = useRef(null);
   const [description, setDescription] = useState("");
   const [condition, setCondition] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleUpload = () => {
     const fileInput = fileInputRef.current;
@@ -63,7 +66,12 @@ export default function RouteAdvisor() {
         setLoading(false);
       });
   };
-  console.log(condition.trim().toLowerCase());
+
+  const handleCoordinateSubmit = (data) => {
+    console.log(data);
+    navigate("/map", { state: data });
+  };
+
   return (
     <div style={styles.mainContainer}>
       <div style={styles.header}>AI Truck Condition Evaluator</div>
@@ -95,27 +103,36 @@ export default function RouteAdvisor() {
         <div className="mt-10 p-4 rounded-md border border-gray-700 bg-black text-white">
           {(() => {
             const normalized = condition.trim().toLowerCase();
+            let label, bgColor;
             if (normalized === "excellent" || normalized === "good") {
-              return (
-                <button className="mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                  ✅ Allowed to Proceed
-                </button>
-              );
+              label = "✅ Allowed to Proceed";
+              bgColor = "bg-green-600 hover:bg-green-700";
             } else if (normalized === "fair") {
-              return (
-                <button className="mt-3 px-4 py-2 bg-yellow-500 text-black rounded hover:bg-yellow-600">
-                  ⚠️ Proceed with Caution
-                </button>
-              );
+              label = "⚠️ Proceed with Caution";
+              bgColor = "bg-yellow-500 hover:bg-yellow-600 text-black";
             } else if (normalized === "bad") {
+              label = "❌ Not Allowed to Proceed";
+              bgColor = "bg-red-600 hover:bg-red-700";
+            }
+
+            if (label) {
               return (
-                <button className="mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-                  ❌ Not Allowed to Proceed
+                <button
+                  className={`mt-3 px-4 py-2 rounded ${bgColor}`}
+                  onClick={() => setModalVisible(true)}
+                >
+                  {label}
                 </button>
               );
             }
           })()}
         </div>
+      )}
+      {modalVisible && (
+        <CoordinateModal
+          onClose={() => setModalVisible(false)}
+          onSubmit={handleCoordinateSubmit}
+        />
       )}
     </div>
   );
