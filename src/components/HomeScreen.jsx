@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { CoordinateModal } from "./CoordinateModal";
+import { HiPlus } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 export default function RouteAdvisor() {
   const fileInputRef = useRef(null);
@@ -128,7 +129,7 @@ export default function RouteAdvisor() {
 
         <div className="info-panel">
           <div className="info-box">
-            <h2>Description</h2>
+            <h2 className="font-bold">Description</h2>
             <p>{description || "No description yet."}</p>
           </div>
 
@@ -139,8 +140,17 @@ export default function RouteAdvisor() {
               flexDirection: "column",
             }}
           >
-            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-              <h2>Condition: {condition}</h2>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                marginBottom: "16px",
+                alignItems: "center",
+              }}
+            >
+              <h2>
+                <b>Condition:</b>
+              </h2>
 
               {condition ? (
                 <div
@@ -149,7 +159,7 @@ export default function RouteAdvisor() {
                   {getConditionTag()}
                 </div>
               ) : (
-                <p style={{ paddingTop: "4px" }}>No condition yet.</p>
+                <p>No condition yet.</p>
               )}
             </div>
             <div>
@@ -166,9 +176,13 @@ export default function RouteAdvisor() {
                     borderRadius: "6px",
                     cursor: "pointer",
                     fontWeight: "500",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px", // spacing between icon and text
                   }}
                 >
-                  ➕ Enter Route Coordinates
+                  <HiPlus style={{ fontSize: "16px" }} />
+                  Enter Route Coordinates
                 </button>
               )}
             </div>
