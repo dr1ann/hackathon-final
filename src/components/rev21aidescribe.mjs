@@ -44,25 +44,25 @@ You are a professional vehicle inspection assistant. Based on the following desc
 
 "${visionText}"
 
-Evaluate the *overall visible condition* of the truck. Consider these factors in your assessment:
+Evaluate the overall visible condition of the truck. Consider these factors in your assessment:
 - Signs of wear, dents, scratches, rust, or visible damage
 - Missing or broken components
 - Paint condition, surface cleanliness, and maintenance cues
 - Mechanical parts: Are they dirty, oily, rusty, or clean and orderly?
 - Whether the environment (e.g., workshop, outdoors) suggests active maintenance or neglect
 - Presence of professional or industrial setup indicating care or neglect
-- Lack of any mention of damage, rust, or wear may indicate a *well-maintained* vehicle
+- Lack of any mention of damage, rust, or wear may indicate a well-maintained vehicle
 
 Even if the description is vague, make a judgment by interpreting:
-- Cleanliness or neatness = likely *Good* or *Excellent*
-- Descriptions of clutter, dirt, or industrial wear = likely *Fair* or *Bad*
+- Cleanliness or neatness = likely Good or Excellent
+- Descriptions of clutter, dirt, or industrial wear = likely Fair or Bad
 - If only parts of the truck are visible (e.g., engine), assess the visible parts carefully and judge based on their apparent condition
 
 Respond with only ONE of these ratings based on your assessment:
-- *Excellent* (like new, no visible issues, well-maintained)
-- *Good* (minor wear, no major visible damage)
-- *Fair* (visible scratches, dents, or signs of aging)
-- *Bad* (obvious damage, poor condition, or major issues)
+- Excellent (like new, no visible issues, well-maintained)
+- Good (minor wear, no major visible damage)
+- Fair (visible scratches, dents, or signs of aging)
+- Bad (obvious damage, poor condition, or major issues)
 
 Only respond with the rating word. No explanation or extra text.
 `;

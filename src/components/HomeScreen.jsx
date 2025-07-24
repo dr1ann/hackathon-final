@@ -1,11 +1,14 @@
 import React, { useRef, useState } from "react";
-
+import { CoordinateModal } from "./CoordinateModal";
+import { useNavigate } from "react-router-dom";
 export default function RouteAdvisor() {
   const fileInputRef = useRef(null);
   const [description, setDescription] = useState("");
   const [condition, setCondition] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
 
   const handleUpload = () => {
@@ -119,6 +122,41 @@ export default function RouteAdvisor() {
       </div>
 
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+      {condition && (
+        <div className="mt-10 p-4 rounded-md border border-gray-700 bg-black text-white">
+          {(() => {
+            const normalized = condition.trim().toLowerCase();
+            let label, bgColor;
+            if (normalized === "excellent" || normalized === "good") {
+              label = "✅ Allowed to Proceed";
+              bgColor = "bg-green-600 hover:bg-green-700";
+            } else if (normalized === "fair") {
+              label = "⚠️ Proceed with Caution";
+              bgColor = "bg-yellow-500 hover:bg-yellow-600 text-black";
+            } else if (normalized === "bad") {
+              label = "❌ Not Allowed to Proceed";
+              bgColor = "bg-red-600 hover:bg-red-700";
+            }
+
+            if (label) {
+              return (
+                <button
+                  className={`mt-3 px-4 py-2 rounded ${bgColor}`}
+                  onClick={() => setModalVisible(true)}
+                >
+                  {label}
+                </button>
+              );
+            }
+          })()}
+        </div>
+      )}
+      {modalVisible && (
+        <CoordinateModal
+          onClose={() => setModalVisible(false)}
+          onSubmit={handleCoordinateSubmit}
+        />
+      )}
     </div>
   );
 }
