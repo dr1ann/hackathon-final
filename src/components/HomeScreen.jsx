@@ -111,7 +111,7 @@ export default function RouteAdvisor() {
 
   return (
     <div className="page-container">
-      <h1 className="title">InspectMe</h1>
+      <h1 className="title">ChecknGo</h1>
 
       <div className="upload-section">
         <input
