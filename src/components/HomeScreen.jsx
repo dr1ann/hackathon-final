@@ -119,13 +119,13 @@ export default function RouteAdvisor() {
       </div>
 
       <div className="result-container">
-      <div className="glass-card">
-        {previewImage ? (
-          <img src={previewImage} alt="Uploaded" className="preview-img" />
-        ) : (
-          <div className="glass-placeholder">No image uploaded</div>
-        )}
-      </div>
+        <div className="glass-card">
+          {previewImage ? (
+            <img src={previewImage} alt="Uploaded" className="preview-img" />
+          ) : (
+            <div className="glass-placeholder">No image uploaded</div>
+          )}
+        </div>
 
         <div className="info-panel">
           <div className="info-box">

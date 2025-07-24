@@ -35,7 +35,7 @@ app.post("/proxy-upload", upload.array("file"), async (req, res) => {
 
       const visionText = await visionResponse.text();
 
-      descriptions.push(JSON.parse(visionText)?.text || visionText);
+      descriptions.push(visionText);
     }
 
     const combinedDescription = descriptions.join("\n");
@@ -101,6 +101,8 @@ Only respond with the rating word. Do not include any explanation or extra text.
     console.log("🤖 Condition Evaluation:", chatText);
 
     res.send({
+      description: descriptions.join("\n"),
+
       condition: chatText,
     });
   } catch (error) {
