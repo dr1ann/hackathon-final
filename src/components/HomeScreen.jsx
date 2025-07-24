@@ -98,7 +98,6 @@ export default function RouteAdvisor() {
         <input
           type="file"
           accept="image/*"
-          multiple
           ref={fileInputRef}
           style={{ display: "none" }}
           onChange={handleFileChange}
