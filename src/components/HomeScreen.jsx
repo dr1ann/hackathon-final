@@ -72,11 +72,11 @@ export default function RouteAdvisor() {
   };
 
   const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setPreviewImage(URL.createObjectURL(file));
-  }
-};
+    const file = e.target.files[0];
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
 
   const getConditionTag = () => {
     const normalized = condition.trim().toLowerCase();
@@ -95,9 +95,25 @@ export default function RouteAdvisor() {
       <h1 className="title">InspectMe</h1>
 
       <div className="upload-section">
-        <input type="file" accept="image/*" ref={fileInputRef} style={{ display: 'none' }}  onChange={handleFileChange}/>
-        <button className="upload-btn" onClick={() => fileInputRef.current.click()}>Choose Image</button>
-        <button className="analyze-btn" onClick={handleUpload} disabled={loading}>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <button
+          className="upload-btn"
+          onClick={() => fileInputRef.current.click()}
+        >
+          Choose Image
+        </button>
+        <button
+          className="analyze-btn"
+          onClick={handleUpload}
+          disabled={loading}
+        >
           {loading ? "Analyzing..." : "Upload & Analyze"}
         </button>
       </div>
@@ -117,44 +133,52 @@ export default function RouteAdvisor() {
             <p>{description || "No description yet."}</p>
           </div>
 
-          <div className="info-box">
-            <h2>Condition</h2>
-            <p><em>{condition || "No condition yet."}</em></p>
-            {condition && getConditionTag()}
+          <div
+            className="info-box"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+              <h2>Condition: {condition}</h2>
+
+              {condition ? (
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  {getConditionTag()}
+                </div>
+              ) : (
+                <p style={{ paddingTop: "4px" }}>No condition yet.</p>
+              )}
+            </div>
+            <div>
+              {condition && (
+                <button
+                  onClick={() => setModalVisible(true)}
+                  style={{
+                    marginTop: "15px",
+                    padding: "10px 18px",
+                    fontSize: "14px",
+                    backgroundColor: "#007BFF",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    fontWeight: "500",
+                  }}
+                >
+                  ➕ Enter Route Coordinates
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-      {condition && (
-        <div className="mt-10 p-4 rounded-md border border-gray-700 bg-black text-white">
-          {(() => {
-            const normalized = condition.trim().toLowerCase();
-            let label, bgColor;
-            if (normalized === "excellent" || normalized === "good") {
-              label = "✅ Allowed to Proceed";
-              bgColor = "bg-green-600 hover:bg-green-700";
-            } else if (normalized === "fair") {
-              label = "⚠️ Proceed with Caution";
-              bgColor = "bg-yellow-500 hover:bg-yellow-600 text-black";
-            } else if (normalized === "bad") {
-              label = "❌ Not Allowed to Proceed";
-              bgColor = "bg-red-600 hover:bg-red-700";
-            }
 
-            if (label) {
-              return (
-                <button
-                  className={`mt-3 px-4 py-2 rounded ${bgColor}`}
-                  onClick={() => setModalVisible(true)}
-                >
-                  {label}
-                </button>
-              );
-            }
-          })()}
-        </div>
-      )}
       {modalVisible && (
         <CoordinateModal
           onClose={() => setModalVisible(false)}
