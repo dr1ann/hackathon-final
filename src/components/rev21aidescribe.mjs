@@ -123,7 +123,6 @@ Only respond with the rating word. Do not include any explanation or extra text.
     );
 
     const chatText = await chatResponse.text();
-    console.log("🤖 Condition Evaluation:", chatText);
 
     let parsedCondition = "No evaluation.";
     try {
@@ -138,7 +137,7 @@ Only respond with the rating word. Do not include any explanation or extra text.
       condition: parsedCondition,
     });
   } catch (error) {
-    console.error("❌ Proxy error:", error);
+    console.error("Proxy error:", error);
     res.status(500).send({ error: "Proxy failed" });
   }
 });
