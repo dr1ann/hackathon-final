@@ -128,9 +128,9 @@ export default function RouteAdvisor() {
           Choose Image
         </button>
         <button
-          className="analyze-btn"
+          className="analyze-btn disabled:!bg-gray-400 disabled:!cursor-not-allowed"
           onClick={handleUpload}
-          disabled={loading}
+          disabled={loading || !fileInputRef.current}
         >
           {loading ? "Analyzing..." : "Upload & Analyze"}
         </button>
