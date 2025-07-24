@@ -16,7 +16,6 @@ app.post("/proxy-upload", upload.array("file"), async (req, res) => {
   try {
     const descriptions = [];
 
-    // Loop through all uploaded files
     for (const file of req.files) {
       const form = new FormData();
       form.append("file", fs.createReadStream(file.path), file.originalname);
@@ -33,15 +32,40 @@ app.post("/proxy-upload", upload.array("file"), async (req, res) => {
         }
       );
 
-      const visionText = await visionResponse.text();
-
+      const visionJson = await visionResponse.json();
+      const visionText = visionJson.text?.trim() || ""; // Make sure it's just the text string
       descriptions.push(visionText);
     }
 
     const combinedDescription = descriptions.join("\n");
     console.log("🖼️ Image description:", combinedDescription);
+
+    // Ensure combinedDescription is a string (in case it's accidentally a JSON object)
+    const descriptionText =
+      typeof combinedDescription === "string"
+        ? combinedDescription
+        : JSON.stringify(combinedDescription);
+
+    // Guard clause: check if description mentions any vehicle-related keywords
+    const isVehicle =
+      /\b(car|truck|vehicle|van|suv|jeep|automobile|bumper|door|mirror|fender|headlight|taillight|hood|windshield|tire|rim|grille|license plate|exhaust|wheel|chassis|trunk|bonnet|wiper|engine|radiator|brake pad|brake|caliper|suspension|shock absorber|spring|axle|fuel filter|oil filter|air filter|alternator|transmission|gearbox|fan belt|timing belt|turbo|intake manifold|exhaust manifold|piston|crankshaft|cylinder|camshaft|valve cover|battery|driveshaft|muffler|differential|injector|motor|ignition coil|spark plug)\b/i.test(
+        descriptionText
+      );
+
+    if (!isVehicle) {
+      console.warn("🚫 Not a vehicle image detected. Skipping evaluation.");
+      return res.send({
+        description: descriptionText,
+        condition: "Not a vehicle",
+      });
+    }
+
     const prompt = `
-You are a professional vehicle inspection assistant. Based on the following description of a car or truck image:
+You are a professional vehicle inspection assistant.
+
+If the description is not about a vehicle or common vehicle component (such as engine, motor, tire, transmission, radiator, or other vehicle parts), respond with exactly: Not a vehicle
+
+Otherwise, based on the following description of a car or truck image:
 
 "${combinedDescription}"
 
@@ -76,6 +100,7 @@ Respond with only ONE of the following ratings:
 - *Good* (minor wear, no major visible damage)
 - *Fair* (visible scratches, dents, or signs of aging)
 - *Bad* (obvious damage, poor condition, serious issues like airbag deployment or crushed body)
+- *Not a vehicle* (if description is not about a vehicle or vehicle parts)
 
 Only respond with the rating word. Do not include any explanation or extra text.
 `;
@@ -100,16 +125,24 @@ Only respond with the rating word. Do not include any explanation or extra text.
     const chatText = await chatResponse.text();
     console.log("🤖 Condition Evaluation:", chatText);
 
-    res.send({
-      description: descriptions.join("\n"),
+    let parsedCondition = "No evaluation.";
+    try {
+      const parsed = JSON.parse(chatText);
+      parsedCondition = parsed.content || parsedCondition;
+    } catch (e) {
+      console.error("Error parsing chatText:", e);
+    }
 
-      condition: chatText,
+    res.send({
+      description: combinedDescription,
+      condition: parsedCondition,
     });
   } catch (error) {
     console.error("❌ Proxy error:", error);
     res.status(500).send({ error: "Proxy failed" });
   }
 });
+
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });
