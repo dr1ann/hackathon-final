@@ -10,6 +10,10 @@ export default function RouteAdvisor() {
   const navigate = useNavigate();
   const [modalVisible, setModalVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const handleCoordinateSubmit = (data) => {
+    console.log(data);
+    navigate("/map", { state: data });
+  };
 
   const handleUpload = () => {
     const fileInput = fileInputRef.current;
